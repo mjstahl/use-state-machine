@@ -23,7 +23,7 @@ function H2O () {
   const [current, transition, to] = useStateMachine(ExampleState)
   return (
     <div>
-      <p>You're H2O is in a {current.state} state.</p>
+      <p>Your H2O is in a {current.state} state.</p>
       <p>The temperature of your H2O is {current.value}.</p>
       <button onClick={() => transition(to.NEXT_STATE)}>
         To {to.NEXT_STATE}
