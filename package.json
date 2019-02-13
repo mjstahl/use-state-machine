@@ -1,6 +1,6 @@
 {
   "name": "use-state-machine",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Use Finite State Machines with React Hooks",
   "main": "index.js",
   "scripts": {
