@@ -6,13 +6,9 @@ function useStateMachine (states) {
   const [state, setState] = useState(machine.value)
 
   state.onTransition((updated) => setState(updated.value))
-  return [{
-      state: machine.state,
-      value: machine.value
-    },
-    machine.to,
-    machine.actions
-  ]
+
+  const current = { state: machine.state, value: machine.value }
+  return [current, machine.to, machine.actions ]
 }
 
 module.exports = { StateMachine: Stated, useStateMachine }
