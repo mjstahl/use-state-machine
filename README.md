@@ -1,5 +1,5 @@
 # use-state-machine
-Finite State Machine as a React Hook
+Use Finite State Machines with React Hooks
 
 ## Installation
 
