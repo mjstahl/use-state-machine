@@ -17,10 +17,10 @@ import { useStateMachine, StateMachine } from 'use-state-machine'
 // H2O.js
 import React from 'react'
 import { useStateMachine } from 'use-state-machine'
-import ExampleState from './H2O.state'
+import H2OState from './H2O.state'
 
 function H2O () {
-  const [current, transition, to] = useStateMachine(ExampleState)
+  const [current, transition, to] = useStateMachine(H2OState)
   return (
     <div>
       <p>Your H2O is in a {current.state} state.</p>
