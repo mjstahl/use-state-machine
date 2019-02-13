@@ -26,7 +26,7 @@ function H2O () {
       <p>Your H2O is in a {current.state} state.</p>
       <p>The temperature of your H2O is {current.value}.</p>
       <button onClick={() => transition(to.NEXT_STATE)}>
-        To {to.NEXT_STATE}
+        To {current.via.NEXT_STATE}
       </button>
     </div>
   )

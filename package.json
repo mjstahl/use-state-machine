@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/mjstahl/use-state-machine#readme",
   "dependencies": {
-    "@mjstahl/stated": "^6.1.5",
+    "@mjstahl/stated": "^6.2.0",
     "react": "^16.8.1"
   },
   "devDependencies": {
