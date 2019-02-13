@@ -1,0 +1,32 @@
+{
+  "name": "use-state-machine",
+  "version": "0.1.0",
+  "description": "Use Finite State Machines with React Hooks",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjstahl/use-state-machine.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "fsm",
+    "statemachine",
+    "state"
+  ],
+  "author": "Mark Stahl <mjstahl@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mjstahl/use-state-machine/issues"
+  },
+  "homepage": "https://github.com/mjstahl/use-state-machine#readme",
+  "dependencies": {
+    "@mjstahl/stated": "^6.1.5"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}
