@@ -38,7 +38,7 @@ function H2O () {
 import { StateMachine } from 'use-state-machine'
 
 export default new StateMachine({
-  initial: 'water',
+  initial: 'liquid',
   liquid: {
     NEXT_STATE: 'solid',
     value: '60F'
