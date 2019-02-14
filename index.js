@@ -1,19 +1,19 @@
-const { Stated } = require('@mjstahl/stated')
 const { useState } = require('react')
+const StateMachine = require('./machine')
 
 function useStateMachine (states) {
-  const machine = (states instanceof Stated) ? states : new Stated(states)
+  const machine = (states instanceof StateMachine)
+    ? states
+    : new StateMachine(states)
   const [, setState] = useState(machine.value)
 
-  machine.onTransition((updated) => setState(updated.value))
+  function transition () {
+    machine.transition(...arguments)
+    setState(machine.value)
+  }
 
-  // defined to override the Stated behavior to NOT return
-  // a Stated object
-  function transition () { machine.to(...arguments) }
-
-  const { actions, state, value, via } = machine
-  // [ current, transition, to ]
-  return [{ state, value, via }, transition, actions]
+  const { state, to, value } = machine
+  return [{ state, value }, transition, to]
 }
 
-module.exports = { StateMachine: Stated, useStateMachine }
+module.exports = { StateMachine, useStateMachine }

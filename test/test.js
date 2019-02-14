@@ -6,36 +6,43 @@ import {
   wait
 } from 'react-testing-library'
 
+import './machine'
 import H2O from './H2O'
 
-function testElementsWith (test, ids, values) {
+function testParagraphsWith (test, ids, values) {
   ids.map((id, index) => {
     expect(test(id).innerHTML).toContain(values[index])
   })
 }
 
-const ids = ['state', 'temp', 'transition']
+const ids = ['state', 'temp']
 
 test('initial rendering', () => {
   const { getByTestId } = render(<H2O />)
-  const values = ['liquid', '60F', 'To solid']
-  testElementsWith(getByTestId, ids, values)
+  testParagraphsWith(getByTestId, ids, ['liquid', '60F'])
+  expect(getByTestId('liquid').disabled).toBeTruthy()
+  expect(getByTestId('solid').disabled).toBeFalsy()
+  expect(getByTestId('gas').disabled).toBeTruthy()
 })
 
-test('transition to new state', async () => {
+test('transition', async () => {
   const { getByTestId } = render(<H2O />)
-  fireEvent.click(getByTestId('transition'))
+  fireEvent.click(getByTestId('solid'))
   await wait(() => {
-    const values = ['solid', '32F', 'To gas']
-    testElementsWith(getByTestId, ids, values)
+    testParagraphsWith(getByTestId, ids, ['solid', '32F'])
+    expect(getByTestId('solid').disabled).toBeTruthy()
+    expect(getByTestId('liquid').disabled).toBeFalsy()
+    expect(getByTestId('gas').disabled).toBeFalsy()
   })
 })
 
-test('transition to the next state', async () => {
+test('transition again', async () => {
   const { getByTestId } = render(<H2O />)
-  fireEvent.click(getByTestId('transition'))
+  fireEvent.click(getByTestId('gas'))
   await wait(() => {
-    const values = ['gas', '212F', 'To liquid']
-    testElementsWith(getByTestId, ids, values)
+    testParagraphsWith(getByTestId, ids, ['gas', '212F'])
+    expect(getByTestId('gas').disabled).toBeTruthy()
+    expect(getByTestId('liquid').disabled).toBeFalsy()
+    expect(getByTestId('solid').disabled).toBeTruthy()
   })
 })
