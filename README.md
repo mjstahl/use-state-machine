@@ -25,12 +25,25 @@ import H2OState from './H2O.state'
 
 function H2O () {
   const [current, transition, to] = useStateMachine(H2OState)
+  const isDisabled = (state) => !Object.keys(to).includes(state)
   return (
     <div>
       <p>Your H2O is in a {current.state} state.</p>
       <p>The temperature of your H2O is {current.value}.</p>
-      <button onClick={() => transition(to.NEXT_STATE)}>
-        To {current.via.NEXT_STATE}
+      <button
+        disabled={isDisabled(to.liquid)}
+        onClick={() => transition(to.liquid)}>
+        To {to.liquid}
+      </button>
+      <button
+        disabled={isDisabled(to.solid)}
+        onClick={() => transition(to.solid)}>
+        To {to.solid}
+      </button>
+      <button
+        disabled={isDisabled(to.solid)}
+        onClick={() => transition(to.gas)}>
+        To {to.gas}
       </button>
     </div>
   )
@@ -44,15 +57,15 @@ import { StateMachine } from 'use-state-machine'
 export default new StateMachine({
   initial: 'liquid',
   liquid: {
-    NEXT_STATE: 'solid',
+    to: ['solid'],
     value: '60F'
   },
   solid: {
-    NEXT_STATE: 'gas',
+    to: ['liquid', 'gas'],
     value: '32F'
   },
   gas: {
-    NEXT_STATE: 'liquid',
+    to: 'liquid',
     value: '212F'
   }
 })
@@ -68,15 +81,14 @@ import { useStateMachine, StateMachine } from 'use-state-machine'
 
 `useStateMachine` takes a JavaScript object or Stated Object as an argument and returns an array consisting of a `current` object, a `transition` function, and a `to` object.
 
-The `current` state consists of three properties: `state`, `value`, and `via`.
-`state` returns the string representing the current state. `value` returns the value (object or primitive) of the current state if one exists and returns `undefined` if not. `via` returns an object with `to` strings as properties and the state string each points to as values.
+The `current` state consists of two properties: `state` and `value`.
+`state` returns the string representing the current state. `value` returns the value (object or primitive) of the current state if one exists and returns `undefined` if not.
 
 ```js
 const [ current ] = useStateMachine(H2OState)
 
 current.state //-> 'liquid'
 current.value //-> '60F'
-current.via   //-> { NEXT_STATE: 'solid' }
 ```
 
 
@@ -90,22 +102,21 @@ transition(to.NEXT_STATE)
 
 current.state //-> 'solid'
 current.value //-> '32F'
-current.via   //-> { 'NEXT_STATE': 'gas' }
 ```
 
 The `to` object returns an object with actions as properties and associated values. `to` should be used to transition between states to avoid typos.
 
 ```js
 const [, transition, to ] = useStateMachine(H2OState)
-transition(to.NEXT_STATE)
+transition(to.solid)
 
-to //-> { 'NEXT_STATE': 'NEXT_STATE' }
+to //-> { 'liquid': 'liquid', 'gas': 'gas' }
 ```
 
 
-`new StateMachine(states: Object[, persistant: Boolean]) -> Stated`
+`new StateMachine(states: Object[, persistant: Boolean]) -> StateMachine`
 
-Refer to [@mjstahl/stated](https://github.com/mjstahl/stated#api) for an overview of the Stated object and its API.
+
 
 ## Maintainers
 
