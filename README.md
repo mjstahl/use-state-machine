@@ -77,7 +77,7 @@ export default new StateMachine({
 import { useStateMachine, StateMachine } from 'use-state-machine'
 ```
 
-`useStateMachine(machine: Object | Stated) -> [Object, Function, Object]`
+`useStateMachine(machine: Object | StateMachine) -> [Object, Function, Object]`
 
 `useStateMachine` takes a JavaScript object or Stated Object as an argument and returns an array consisting of a `current` object, a `transition` function, and a `to` object.
 
@@ -94,17 +94,19 @@ current.value //-> '60F'
 
 `transition(action: String[, updateWith: Any]) -> undefined`
 
-The `transition` function transitions from the current state of the state machine to a new state. If called with a second argument, the `value` of the new state will be updated with the `updateWith` value. If the `updateWith` value is an Object, the state's value and `updateWith` value will be merged. If the `updateWith` value is not an Object, value will be replaced with the `updateWith` value.
+The `transition` function transitions from the current state of the state machine to a new state. If called with a second argument, the `value` of the new state will be updated with the `updateWith` value.
+
+If the `updateWith` value is an Object, the state's value and `updateWith` value will be merged. If the `updateWith` value is not an Object, value will be replaced with the `updateWith` value. If the state's value is a primitive and `updateWith` is an object, the state's value will be set to `updateWith` which will include a property named `value` set to the state's previous primitive value.
 
 ```js
 const [ current, transition, to ] = useStateMachine(H2OState)
-transition(to.NEXT_STATE)
+transition(to.solid)
 
 current.state //-> 'solid'
 current.value //-> '32F'
 ```
 
-The `to` object returns an object with actions as properties and associated values. `to` should be used to transition between states to avoid typos.
+The `to` property returns an object with the states as property names and values. `to` should be used to transition between states to avoid typos.
 
 ```js
 const [, transition, to ] = useStateMachine(H2OState)
@@ -114,9 +116,31 @@ to //-> { 'liquid': 'liquid', 'gas': 'gas' }
 ```
 
 
-`new StateMachine(states: Object[, persistant: Boolean]) -> StateMachine`
+`new StateMachine(states: Object) -> StateMachine`
+
+To create an instance of a StateMachine pass a 'states' object. A valid 'states' object must have, at a minimum, a single state. And an `initial` property which is set to a valid state property.
 
 
+`<StateMachine>.state -> String`
+
+Return the StateMachine's current state.
+
+
+`<StateMachine>.to -> Object`
+
+The `to` property returns an object with the states as property names and values. `to` should be used to transition between states to avoid typos.
+
+
+`<StateMachine>.value -> Any`
+
+`value` returns the value (object or primitive) of the current state if one exists and returns `undefined` if not.
+
+
+`<StateMachine>.transition(action: String[, updateWith: Any]) -> undefined`
+
+The `transition` function transitions from the current state of the state machine to a new state. If called with a second argument, the `value` of the new state will be updated with the `updateWith` value.
+
+If the `updateWith` value is an Object, the state's value and `updateWith` value will be merged. If the `updateWith` value is not an Object, value will be replaced with the `updateWith` value. If the state's value is a primitive and `updateWith` is an object, the state's value will be set to `updateWith` which will include a property named `value` set to the state's previous primitive value.
 
 ## Maintainers
 
