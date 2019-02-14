@@ -56,13 +56,13 @@ import { StateMachine } from 'use-state-machine'
 
 export default new StateMachine({
   initial: 'liquid',
-  liquid: {
-    to: ['solid'],
-    value: '60F'
-  },
   solid: {
-    to: ['liquid', 'gas'],
+    to: 'liquid',
     value: '32F'
+  },
+  liquid: {
+    to: ['gas', 'solid'],
+    value: '60F'
   },
   gas: {
     to: 'liquid',
