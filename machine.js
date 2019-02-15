@@ -4,14 +4,14 @@ class StateMachine {
   constructor (states) {
     autobind(this)
 
-    this._handlers = []
-    this._states = states
-
-    if (states.initial) {
-      this.__transition(states.initial)
-    } else {
+    const initial = states.initial
+    if (!initial || !states[initial]) {
       throw new Error('An "initial" property must specify a valid state.')
     }
+
+    this._handlers = []
+    this._states = states
+    this.__transition(initial)
   }
 
   get value () {

@@ -28,6 +28,18 @@ test('newly created instance', () => {
   expect(state.to).toEqual({ 'solid': 'solid' })
 })
 
+test('states must specify a valid initial state', () => {
+  let states = {
+    liquid: {}
+  }
+  expect(() => new StateMachine(states)).toThrow()
+  states = {
+    initial: 'solid',
+    liquid: {}
+  }
+  expect(() => new StateMachine(states)).toThrow()
+})
+
 test('transition to a new state', () => {
   const state = new StateMachine(H2O())
   state.transition(state.to.solid)
