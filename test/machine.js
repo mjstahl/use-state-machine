@@ -36,6 +36,17 @@ test('transition to a new state', () => {
   expect(state.to).toEqual({ 'gas': 'gas', 'liquid': 'liquid' })
 })
 
+test('transition is also an object with state functions', () => {
+  const state = new StateMachine(H2O())
+  state.transition.toSolid()
+  expect(state.state).toBe('solid')
+  expect(state.value).toBe('32F')
+
+  state.transition.toLiquid('65F')
+  expect(state.state).toBe('liquid')
+  expect(state.value).toBe('65F')
+})
+
 test('update primitive value with a primitive', () => {
   const state = new StateMachine(H2O())
   state.transition(state.to.solid, '30F')

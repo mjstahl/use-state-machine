@@ -19,7 +19,6 @@ const H2OState = new StateMachine({
 
 export default function H2O () {
   const [current, transition, to] = useStateMachine(H2OState)
-  const isDisabled = (state) => !Object.keys(to).includes(state)
   return (
     <div>
       <p data-testid='state'>
@@ -29,17 +28,17 @@ export default function H2O () {
         The temperature of your H2O is {current.value}.
       </p>
       <button data-testid='liquid'
-        disabled={isDisabled(to.liquid)}
+        disabled={!transition.toLiquid}
         onClick={() => transition(to.liquid)}>
         To {to.liquid}
       </button>
       <button data-testid='solid'
-        disabled={isDisabled(to.solid)}
+        disabled={!transition.toSolid}
         onClick={() => transition(to.solid)}>
         To {to.solid}
       </button>
       <button data-testid='gas'
-        disabled={isDisabled(to.gas)}
+        disabled={!transition.toGas}
         onClick={() => transition(to.gas)}>
         To {to.gas}
       </button>

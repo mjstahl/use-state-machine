@@ -25,24 +25,23 @@ import H2OState from './H2O.state'
 
 function H2O () {
   const [current, transition, to] = useStateMachine(H2OState)
-  const isDisabled = (state) => !Object.keys(to).includes(state)
   return (
     <div>
       <p>Your H2O is in a {current.state} state.</p>
       <p>The temperature of your H2O is {current.value}.</p>
       <button
-        disabled={isDisabled(to.liquid)}
-        onClick={() => transition(to.liquid)}>
+        disabled={!transition.toLiquid}
+        onClick={() => transition.toLiquid()}>
         To {to.liquid}
       </button>
       <button
-        disabled={isDisabled(to.solid)}
-        onClick={() => transition(to.solid)}>
+        disabled={!transition.toSolid}
+        onClick={() => transition.toSolid()}>
         To {to.solid}
       </button>
       <button
-        disabled={isDisabled(to.solid)}
-        onClick={() => transition(to.gas)}>
+        disabled={!transition.toGas}
+        onClick={() => transition.toGas()}>
         To {to.gas}
       </button>
     </div>
@@ -98,12 +97,21 @@ The `transition` function transitions from the current state of the state machin
 
 If the `updateWith` value is an Object, the state's value and `updateWith` value will be merged. If the `updateWith` value is not an Object, value will be replaced with the `updateWith` value. If the state's value is a primitive and `updateWith` is an object, the state's value will be set to `updateWith` which will include a property named `value` set to the state's previous primitive value.
 
+`transition` is also an object with a collection of functions allowing the developer to avoid
+transitioning using string names. In the example above, when in the `liquid` state, two functions exist on `transition`: `transition.toSolid` and `transition.toGas`. All state specific functions on `transition` accept a single `valu`.
+
 ```js
 const [ current, transition, to ] = useStateMachine(H2OState)
 transition(to.solid)
 
 current.state //-> 'solid'
 current.value //-> '32F'
+
+transition.toLiquid()
+
+current.state //-> 'liquid'
+
+transition.toGas()
 ```
 
 The `to` property returns an object with the states as property names and values. `to` should be used to transition between states to avoid typos.

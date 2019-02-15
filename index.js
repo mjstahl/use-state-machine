@@ -7,12 +7,11 @@ function useStateMachine (states) {
     : new StateMachine(states)
   const [, setState] = useState(machine.value)
 
-  function transition () {
-    machine.transition(...arguments)
+  machine.onTransition((machine) => {
     setState(machine.value)
-  }
+  })
 
-  const { state, to, value } = machine
+  const { state, to, transition, value } = machine
   return [{ state, value }, transition, to]
 }
 
