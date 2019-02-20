@@ -1,6 +1,6 @@
 const autobind = require('./autobind')
 
-class StateMachine {
+module.exports = class StateMachine {
   constructor (states) {
     autobind(this)
 
@@ -100,5 +100,3 @@ class StateMachine {
     this._handlers.forEach(h => h(this))
   }
 }
-
-module.exports = StateMachine

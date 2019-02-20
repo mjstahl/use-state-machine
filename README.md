@@ -73,8 +73,10 @@ export default new StateMachine({
 
 ## API
 
+### useStateMachine
+
 ```js
-import { useStateMachine, StateMachine } from 'use-state-machine'
+import { useStateMachine } from 'use-state-machine'
 ```
 
 `useStateMachine(machine: Object | StateMachine) -> [Object, Object]`
@@ -115,6 +117,11 @@ current.state //-> 'liquid'
 transition.toGas()
 ```
 
+### StateMachine
+
+```js
+import { StateMachine } from 'use-state-machine'
+```
 
 `new StateMachine(states: Object) -> StateMachine`
 
