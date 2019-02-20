@@ -84,7 +84,7 @@ import { useStateMachine } from 'use-state-machine'
 `useStateMachine` takes a JavaScript object or `StateMachine` Object as an argument and returns an array consisting of a `current` object and a `transition` object.
 
 
-`transition -> Object`
+**`current -> Object`**
 
 The `current` state consists of two properties: `state` and `value`.
 `state` returns the string representing the current state. `value` returns the value (object or primitive) of the current state if one exists and returns `undefined` if not.
@@ -96,7 +96,7 @@ current.state //-> 'liquid'
 current.value //-> '60F'
 ```
 
-`transition -> Object`
+**`transition -> Object`**
 
 `transition` is an object with a collection of functions allowing the developer to avoid
 transitioning using the string names. In the example above, when in the `liquid` state, two passive and two active functions exist on `transition`. The passive functions are `transition.toSolid`, `transition.toGas`. The two active functions are `transition.freeze` and `transition.boil`. All state specific functions on `transition` accept a single `value` argument.
@@ -123,7 +123,7 @@ transition.toGas()
 import { StateMachine } from 'use-state-machine'
 ```
 
-`new StateMachine(states: Object) -> StateMachine`
+**`new StateMachine(states: Object) -> StateMachine`**
 
 To create an instance of a StateMachine pass a 'states' object. A valid 'states' object must have, at a minimum, a single state. And an `initial` property which is set to a valid state property.
 
@@ -169,24 +169,24 @@ new StateMachine({
 ```
 
 
-`<StateMachine>.state -> String`
+**`<StateMachine>.state -> String`**
 
 Return the string name of the `StateMachine` state.
 
 
-`<StateMachine>.value -> Any`
+**`<StateMachine>.value -> Any`**
 
 `value` returns the value (object or primitive) of the current state if one exists and returns `undefined` if not.
 
 
-`<StateMachine>.transition -> Object`
+**`<StateMachine>.transition -> Object`**
 
 `transition` is an object with a collection of functions allowing the developer to avoid
 transitioning using the string names. In the example above, when in the `liquid` state, two passive and two active functions exist on `transition`. The passive functions are `transition.toSolid`, `transition.toGas`. The two active functions are `transition.freeze` and `transition.boil`. All state specific functions on `transition` accept a single `value` argument.
 
 If the value argument is an Object, the state's `value` and value argument will be merged. If the the state's `value` is not an Object, the state's `value` will be replaced with the value argument. If the state's `value` is a primitive and the value argument is an object, the state's `value` will be set to the value argument including a property named `value` set to the state's previous primitive value.
 
-`<StateMachine>.onTransition(callback: Function) -> unsubscribe: Function`
+**`<StateMachine>.onTransition(callback: Function) -> unsubscribe: Function`**
 
 When a `StateMachine` object transitions from one state to another all callbacks passed to the `onTransition` function are evaluated with the `StateMachine` object passed as the only argument to the callback. `onTransition` returns a function that unsubscribes the callback when executed.
 
