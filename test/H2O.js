@@ -4,11 +4,12 @@ import { useStateMachine, StateMachine } from '../index'
 const H2OState = new StateMachine({
   initial: 'liquid',
   liquid: {
-    to: ['solid'],
+    freeze: 'solid',
+    boil: 'gas',
     value: '60F'
   },
   solid: {
-    to: ['liquid', 'gas'],
+    to: ['liquid'],
     value: '32F'
   },
   gas: {
@@ -18,7 +19,7 @@ const H2OState = new StateMachine({
 })
 
 export default function H2O () {
-  const [current, transition, to] = useStateMachine(H2OState)
+  const [current, transition] = useStateMachine(H2OState)
   return (
     <div>
       <p data-testid='state'>
@@ -29,18 +30,18 @@ export default function H2O () {
       </p>
       <button data-testid='liquid'
         disabled={!transition.toLiquid}
-        onClick={() => transition(to.liquid)}>
-        To {to.liquid}
+        onClick={() => transition.toLiquid()}>
+        To Liquid
       </button>
       <button data-testid='solid'
         disabled={!transition.toSolid}
-        onClick={() => transition(to.solid)}>
-        To {to.solid}
+        onClick={() => transition.freeze()}>
+        To Solid
       </button>
       <button data-testid='gas'
         disabled={!transition.toGas}
-        onClick={() => transition(to.gas)}>
-        To {to.gas}
+        onClick={() => transition.boil()}>
+        To Gas
       </button>
     </div>
   )
