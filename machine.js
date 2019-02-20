@@ -1,4 +1,6 @@
 const autobind = require('./autobind')
+const camelCase = require('lodash.camelcase')
+const capitalize = require('lodash.capitalize')
 
 module.exports = class StateMachine {
   constructor (states) {
@@ -35,14 +37,11 @@ module.exports = class StateMachine {
   }
 
   get transition () {
-    const capitalize = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1)
-    }
     const fns = {}
     Object.keys(fns).forEach(k => delete fns[k])
 
     this._possibleStates.reduce((fns, state) => {
-      fns[`to${capitalize(state)}`] = ((to) => {
+      fns[`to${capitalize(camelCase(state))}`] = ((to) => {
         return (updateValue) => this._transition(to, updateValue)
       })(state)
       return fns
