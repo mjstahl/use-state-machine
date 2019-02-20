@@ -11,7 +11,7 @@ Use Finite State Machines with React Hooks
 
 ## Installation
 
-```shell
+```console
 $ npm install --save use-state-machine
 ```
 
@@ -79,7 +79,7 @@ export default new StateMachine({
 import { useStateMachine } from 'use-state-machine'
 ```
 
-`useStateMachine(machine: Object | StateMachine) -> [Object, Object]`
+**`useStateMachine(machine: Object | StateMachine) -> [Object, Object]`**
 
 `useStateMachine` takes a JavaScript object or `StateMachine` Object as an argument and returns an array consisting of a `current` object and a `transition` object.
 
