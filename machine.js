@@ -34,29 +34,26 @@ class StateMachine {
     }
   }
 
-  get to () {
-    let possible = this._states[this.state].to
-    if (!possible || !possible.length) {
-      possible = Object.keys(this._states).filter(p => p !== 'initial')
-    }
-    if (!Array.isArray(possible)) possible = [possible]
-    return possible.reduce((to, p) => Object.assign(to, { [p]: p }), {})
-  }
-
   get transition () {
     const capitalize = (string) => {
       return string.charAt(0).toUpperCase() + string.slice(1)
     }
-    const func = this._transition
-    Object.keys(func).forEach(k => delete func[k])
+    const fns = {}
+    Object.keys(fns).forEach(k => delete fns[k])
 
-    Object.keys(this.to).reduce((fn, state) => {
-      fn[`to${capitalize(state)}`] = ((to) => {
+    this._possibleStates.reduce((fns, state) => {
+      fns[`to${capitalize(state)}`] = ((to) => {
         return (updateValue) => this._transition(to, updateValue)
       })(state)
-      return fn
-    }, func)
-    return func
+      return fns
+    }, fns)
+    Object.keys(this._actions).reduce((fns, action) => {
+      fns[action] = ((to) => {
+        return (updateValue) => this._transition(to, updateValue)
+      })(this._actions[action])
+      return fns
+    }, fns)
+    return fns
   }
 
   onTransition (cb) {
@@ -66,8 +63,28 @@ class StateMachine {
     }
   }
 
+  get _actions () {
+    const state = this._states[this.state]
+    return Object.keys(state)
+      .filter(p => !['value', 'to'].includes(p))
+      .reduce((actions, a) => {
+        actions[a] = state[a]
+        return actions
+      }, {})
+  }
+
+  get _possibleStates () {
+    const state = this._states[this.state]
+    let possible = state.to
+    if (!possible || !possible.length) {
+      possible = Object.values(this._actions)
+    }
+    if (!Array.isArray(possible)) possible = [possible]
+    return possible
+  }
+
   _transition (to, updateValue) {
-    const available = Object.keys(this.to).includes(to)
+    const available = this._possibleStates.includes(to)
     if (!available) {
       throw new Error(`"${to}" does not exist as an action of "${this.state}"`)
     }

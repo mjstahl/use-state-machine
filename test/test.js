@@ -22,7 +22,7 @@ test('initial rendering', () => {
   testParagraphsWith(getByTestId, ids, ['liquid', '60F'])
   expect(getByTestId('liquid').disabled).toBeTruthy()
   expect(getByTestId('solid').disabled).toBeFalsy()
-  expect(getByTestId('gas').disabled).toBeTruthy()
+  expect(getByTestId('gas').disabled).toBeFalsy()
 })
 
 test('transition', async () => {
@@ -32,17 +32,17 @@ test('transition', async () => {
     testParagraphsWith(getByTestId, ids, ['solid', '32F'])
     expect(getByTestId('solid').disabled).toBeTruthy()
     expect(getByTestId('liquid').disabled).toBeFalsy()
-    expect(getByTestId('gas').disabled).toBeFalsy()
+    expect(getByTestId('gas').disabled).toBeTruthy()
   })
 })
 
 test('transition again', async () => {
   const { getByTestId } = render(<H2O />)
-  fireEvent.click(getByTestId('gas'))
+  fireEvent.click(getByTestId('liquid'))
   await wait(() => {
-    testParagraphsWith(getByTestId, ids, ['gas', '212F'])
-    expect(getByTestId('gas').disabled).toBeTruthy()
-    expect(getByTestId('liquid').disabled).toBeFalsy()
-    expect(getByTestId('solid').disabled).toBeTruthy()
+    testParagraphsWith(getByTestId, ids, ['liquid', '60F'])
+    expect(getByTestId('gas').disabled).toBeFalsy()
+    expect(getByTestId('liquid').disabled).toBeTruthy()
+    expect(getByTestId('solid').disabled).toBeFalsy()
   })
 })

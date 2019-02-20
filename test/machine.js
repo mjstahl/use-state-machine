@@ -25,7 +25,7 @@ test('newly created instance', () => {
   const state = new StateMachine(H2O())
   expect(state.state).toBe('liquid')
   expect(state.value).toBe('60F')
-  expect(state.to).toEqual({ 'solid': 'solid' })
+  expect(Object.keys(state.transition).includes('toSolid')).toBeTruthy()
 })
 
 test('states must specify a valid initial state', () => {
@@ -42,10 +42,11 @@ test('states must specify a valid initial state', () => {
 
 test('transition to a new state', () => {
   const state = new StateMachine(H2O())
-  state.transition(state.to.solid)
+  state.transition.toSolid()
   expect(state.state).toBe('solid')
   expect(state.value).toBe('32F')
-  expect(state.to).toEqual({ 'gas': 'gas', 'liquid': 'liquid' })
+  expect(Object.keys(state.transition).includes())
+  expect(Object.keys(state.transition).includes('toLiquid', 'toGas')).toBeTruthy()
 })
 
 test('transition is also an object with state functions', () => {
@@ -61,20 +62,20 @@ test('transition is also an object with state functions', () => {
 
 test('update primitive value with a primitive', () => {
   const state = new StateMachine(H2O())
-  state.transition(state.to.solid, '30F')
+  state.transition.toSolid('30F')
   expect(state.value).toBe('30F')
 })
 
 test('update primitive value with an object', () => {
   const state = new StateMachine(H2O())
-  state.transition(state.to.solid, { knownAs: 'water' })
+  state.transition.toSolid({ knownAs: 'water' })
   expect(state.value).toEqual({ knownAs: 'water', value: '32F' })
 })
 
 test('update object value with an object', () => {
   const state = new StateMachine(H2O())
-  state.transition(state.to.solid)
-  state.transition(state.to.gas, { temp: '213F' })
+  state.transition.toSolid()
+  state.transition.toGas({ temp: '213F' })
   expect(state.value).toEqual({ knownAs: 'steam', temp: '213F' })
 })
 
@@ -82,16 +83,22 @@ test('states without to states can transition to all states', () => {
   const state = new StateMachine({
     initial: 'liquid',
     liquid: {
+      freeze: 'solid',
+      boil: 'gas',
       value: '60F'
     },
     solid: {
+      warm: 'liquid',
       value: '32F'
     },
     gas: {
+      chill: 'liquid',
       value: '212F'
     }
   })
-  expect(state.to).toEqual({ 'liquid': 'liquid', 'solid': 'solid', 'gas': 'gas' })
-  state.transition(state.to.gas)
+  expect(Object.keys(state.transition).includes('toSolid', 'toGas', 'freeze', 'boild')).toBeTruthy()
+
+  state.transition.toGas()
+  expect(Object.keys(state.transition).includes('toLiquid', 'chill')).toBeTruthy()
   expect(state.state).toBe('gas')
 })
